@@ -34,6 +34,20 @@
             </ul>
         </div>
     </div>
+    <div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ajax</h3>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <button class="btn" th:onclick="'action();'">开始</button>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="panel panel-primary">
         <img class="lazy" width="240" height="240"  th:src="@{img/demo/default.jpg}" data-original="img/demo/dog.jpg"/>
@@ -60,6 +74,15 @@
     console.log(single.name + "/" + single.age);
     function getName(name) {
         console.log(name);
+    }
+
+    function action() {
+        $.get({
+            url:"demo",
+            success:function (data) {
+                alert(data);
+            }
+        });
     }
 </script>
 </body>

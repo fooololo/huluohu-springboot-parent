@@ -1,9 +1,11 @@
 package com.huluohu.learning.springboot.n2.controller;
 
+import com.huluohu.learning.springboot.n2.core.converter.DemoObj;
 import com.huluohu.learning.springboot.n2.vo.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @Controller
 public class Demo1Controller {
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String index(Model model){
         Person single = new Person("aa", 11);
 
@@ -29,5 +31,11 @@ public class Demo1Controller {
         model.addAttribute("singlePerson",single);
         model.addAttribute("people",persons);
         return "index";
+    }
+
+    @RequestMapping(value = "/demo",produces = {"application/x-huluohu"})
+    @ResponseBody
+    public DemoObj demo(){
+        return new DemoObj(12L,"小明");
     }
 }

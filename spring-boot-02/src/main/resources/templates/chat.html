@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyeleaf.org">
+<head>
+    <meta charset="UTF-8" content="text/html" />
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Chat</title>
+    <link th:href="@{lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{lib/bootstrap/css/bootstrap-theme.min.css}"  rel="stylesheet" />
+    <script th:src="@{lib/jquery-2.2.3.min.js}" type="text/javascript"></script>
+    <script th:src="@{lib/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{lib/jquery.lazyload.js}" type="text/javascript"></script>
+    <script th:src="@{lib/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+    <script th:src="@{lib/sockjs.min.js}" type="text/javascript"></script>
+    <script th:src="@{lib/stomp.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<p>聊天室</p>
+<form id="chat_form">
+    <textarea rows="4" cols="6" name="text"></textarea>
+    <input type="submit" value="发送"/>
+</form>
+
+<script th:inline="javascript">
+    $(function() {
+        $(".lazy").lazyload({
+            effect : "fadeIn",
+            failure_limit:10,
+            threshold : 20,
+            skip_invisible:false
+        }).trigger("appear");
+    });
+
+    var sock = new SockJS("/endpointChat")
+    var stomp = Stomp.over(sock);
+
+    stomp.connect("guest","guest",function (frame) {
+        stomp.subscribe("/user/queue/notifications",hendleNotification)
+    });
+
+    function hendleNotification(message) {
+        $("#output").append("<b>Received: " + message.body + "</b><br/>");
+    }
+
+    function sendSpittle(text) {
+        stomp.send("/chat",{},text);
+    }
+
+    $("#chat_form").submit(function (e) {
+        e.preventDefault();
+        var text = $("#chat_form").find('textarea[name="text"]').val();
+        sendSpittle(text);
+    });
+
+    $("#stop").click(function () {
+        sock.close();
+    });
+</script>
+<div id="output">
+
+</div>
+</body>
+</html>

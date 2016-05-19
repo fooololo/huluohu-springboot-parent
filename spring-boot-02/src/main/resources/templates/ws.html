@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyeleaf.org">
+<head>
+    <meta charset="UTF-8" content="text/html" />
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>WS</title>
+    <link th:href="@{lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{lib/bootstrap/css/bootstrap-theme.min.css}"  rel="stylesheet" />
+</head>
+<body onload="disconnect();">
+<noscript>
+    <h2 style="color: red;">貌似你的浏览器不支持websocket</h2>
+</noscript>
+<di>
+    <div>
+        <button id="connect" onclick="connect();">连接</button>
+        <button id="disconnect" onclick="disconnect();" disabled="disabled">断开</button>
+    </div>
+    <div id="conversation_div">
+        <label>姓名</label><input type="text" id="name"/>
+        <button id="send_name" onclick="sendName();">发送</button>
+        <p id="response"></p>
+    </div>
+</di>
+
+<script th:src="@{lib/jquery-2.2.3.min.js}" type="text/javascript"></script>
+<script th:src="@{lib/jquery.lazyload.js}" type="text/javascript"></script>
+<script th:src="@{lib/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+<script th:src="@{lib/sockjs.min.js}" type="text/javascript"></script>
+<script th:src="@{lib/stomp.min.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    var stompClient = null;
+    function setConnected(connected) {
+        $("#connect").attr("disabled",connected);
+        $("#disconnect").attr("disabled",!connected);
+        $("#conversation_div").css("visibility",connected ? 'visible':'hidden');
+        $("#response").html();
+    }
+    function connect() {
+        //连接SockJS的endpoint
+        var socket = new SockJS('/endpointHuluohu');
+        //使用STOMP子协议的WebSocket客户端
+        stompClient = Stomp.over(socket);
+        //连接eiWebSocket服务器
+        stompClient.connect({},function (frame) {
+            setConnected(true);
+            console.log("connected:" + frame);
+            //订阅目标（@SendTo）发送的消息
+            stompClient.subscribe("/topic/getResponse",function (response) {
+                showResponse(JSON.parse(response.body).responseMsg);
+            });
+        });
+    }
+    function disconnect() {
+        if(stompClient != null){
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("disconnectd")
+    }
+    function sendName() {
+        var name = $('#name').val();
+        //向目标（@MessageMapping）发送消息
+        stompClient.send("/welcome",{},JSON.stringify({'name':name}));
+    }
+    function showResponse(message) {
+        var response = $("#response");
+        response.html(message);
+    }
+</script>
+</body>
+</html>
