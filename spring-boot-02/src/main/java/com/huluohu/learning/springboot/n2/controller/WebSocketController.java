@@ -41,7 +41,7 @@ public class WebSocketController {
 	/**
 	 * 点对点测试
 	 */
-	@MessageMapping("/chat")
+	@MessageMapping("/chatroom")
 	public void handleChat(Principal principal,String msg){
 		if("huluohu".equals(principal.getName())){
 			messagingTemplate.convertAndSendToUser("admin","/queue/notifications",principal.getName()+"-send:" + msg);

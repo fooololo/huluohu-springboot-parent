@@ -15,6 +15,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -37,6 +38,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("/ws").setViewName("/ws");
 		registry.addViewController("/login").setViewName("/login");
 		registry.addViewController("/").setViewName("/login");
+		registry.addViewController("/chat").setViewName("/chat");
 	}
 
 	@Bean
@@ -83,6 +85,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		protocol.setKeyPass(tomcatSSLProperties.getKeyPassword());
 		protocol.setKeyAlias(tomcatSSLProperties.getKeyAlias());
 		return connector;
+	}
+
+	@Override public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/static/**").addResourceLocations("/resources/static/");
+		registry.addResourceHandler("/resources/templates/**").addResourceLocations("/resources/templates/");
 	}
 
 	//	@Bean
