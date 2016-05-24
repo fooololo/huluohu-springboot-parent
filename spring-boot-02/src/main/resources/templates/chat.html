@@ -34,6 +34,9 @@
     stomp.connect("guest","guest",function (frame) {
         stomp.subscribe("/user/queue/notifications",hendleNotification)
     });
+    stomp.addEventListener('open',function (e) {
+        alert(123);
+    });
 
     function hendleNotification(message) {
         $("#output").append("<b>Received: " + message.body + "</b><br/>");

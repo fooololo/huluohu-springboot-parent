@@ -1,0 +1,11 @@
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'王翰',32,'合肥');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'阿萨打',34,'发给对方');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'地方',32,'大热天');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'刚刚',32,'大锅饭');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'燃烧',32,'圣诞狗狗');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'色弱',32,'的提供热');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'鬼地方',32,'鬼魂基因');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'通用',32,'热帖');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'替换',32,'关闭');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'豆腐汤',32,'第三代');
+INSERT INTO person(id,name,age,address) VALUES (hibernate_sequence.nextval,'阿成',32,'双人舞');
