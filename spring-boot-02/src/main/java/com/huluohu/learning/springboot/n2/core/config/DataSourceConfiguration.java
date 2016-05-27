@@ -1,4 +1,4 @@
-package com.huluohu.learning.springboot.n2.config;
+package com.huluohu.learning.springboot.n2.core.config;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
